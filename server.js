@@ -31,8 +31,8 @@ server.listen(port, () => {
 const HEADLESS = true;
 
 app.get("/getData", async (req, res) => {
+  const browser = await puppeteer.launch({ headless: HEADLESS });
   try {
-    const browser = await puppeteer.launch({ headless: HEADLESS });
     const page = await browser.newPage();
     await page.setViewport({ width: 1366, height: 768 });
 
@@ -53,28 +53,34 @@ app.get("/getData", async (req, res) => {
     let previousHeight;
     while (true) {
       try {
-        previousHeight = await page.evaluate('document.body.scrollHeight');
-        await page.evaluate('window.scrollTo(0, document.body.scrollHeight)');
-        await page.waitForFunction(`document.body.scrollHeight > ${previousHeight}`);
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        previousHeight = await page.evaluate("document.body.scrollHeight");
+        await page.evaluate("window.scrollTo(0, document.body.scrollHeight)");
+        await page.waitForFunction(
+          `document.body.scrollHeight > ${previousHeight}`
+        );
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       } catch (e) {
         break;
       }
     }
 
     const data = await page.evaluate(() => {
-      const productElements = document.querySelectorAll('li.normal--2QYVk.gtm-normal-ad');
+      const productElements = document.querySelectorAll(
+        "li.normal--2QYVk.gtm-normal-ad"
+      );
       const products = Array.from(productElements).map((product) => {
-        const priceElement = product.querySelector('.price--3SnqI');
-        const locationElement = product.querySelector('.description--2-ez3');
-        const linkElement = product.querySelector('a');
-        const descriptionElement = product.querySelector('.heading--2eONR');
+        const priceElement = product.querySelector(".price--3SnqI");
+        const locationElement = product.querySelector(".description--2-ez3");
+        const linkElement = product.querySelector("a");
+        const descriptionElement = product.querySelector(".heading--2eONR");
         // const imageElement = product.querySelector('img');
 
         const price = priceElement ? priceElement.innerText : "N/A";
         const location = locationElement ? locationElement.innerText : "N/A";
         const link = linkElement ? linkElement.href : "N/A";
-        const description = descriptionElement ? descriptionElement.innerText : "N/A";
+        const description = descriptionElement
+          ? descriptionElement.innerText
+          : "N/A";
         // const image = imageElement ? imageElement.src : "N/A";
 
         return {
@@ -89,14 +95,13 @@ app.get("/getData", async (req, res) => {
       return products;
     });
 
-    await browser.close();
-
     // Return the data as JSON
     res.json(data);
-
   } catch (e) {
     console.log(e);
-    res.status(500).json({ error: 'An error occurred while scraping data.' });
+    res.status(500).json({ error: "An error occurred while scraping data." });
+  } finally {
+    await browser.close();
   }
 });
 
