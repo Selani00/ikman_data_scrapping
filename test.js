@@ -183,7 +183,6 @@ const longitude = 151.2093;
 app.get('/get', async (req, res) => {
     try {
         const vehicleDTOs = await fetchMarketplaceData(keyword, latitude, longitude);
-        console.log(vehicleDTOs); 
         const html = vehicleDTOs.map(vehicle => `
             <div class="card" style="width: 18rem;">
                 <img src="${vehicle.imageURL}" class="card-img-top" alt="${vehicle.description}">
