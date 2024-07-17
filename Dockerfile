@@ -1,14 +1,23 @@
-FROM ghcr.io/puppeteer/puppeteer:22.13.0
+# Use the official Node.js image from the Docker Hub
+FROM node:latest
 
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true\
-    PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
-
+# Create and change to the app directory
 WORKDIR /usr/src/app
 
-COPY  package*.json ./
+# Copy package.json and package-lock.json (if available)
+COPY package*.json ./
 
-RUN npm ci
+# Install dependencies
+RUN npm install
 
+# Copy the rest of the application code
 COPY . .
 
-CMD ["node", "server.js"]
+# Expose the port that the app runs on
+EXPOSE 9090
+
+# Define environment variable
+ENV PORT 9090
+
+# Command to run the application
+CMD ["node", "test.js"]

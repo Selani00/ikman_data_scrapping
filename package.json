@@ -1,9 +1,9 @@
 {
   "name": "ikman.lk_data_scrapping",
-  "main": "server.js",
+  "main": "test.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "node test.js",
+    "dev": "nodemon test.js"
   },
   "dependencies": {
     "compression": "^1.7.4",
@@ -11,6 +11,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "node-fetch": "^3.3.2",
     "nodemon": "^3.1.4",
     "puppeteer": "^22.13.0"
   }
