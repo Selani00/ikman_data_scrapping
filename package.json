@@ -1,9 +1,9 @@
 {
   "name": "ikman.lk_data_scrapping",
-  "main": "test.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node test.js",
-    "dev": "nodemon test.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "dependencies": {
     "compression": "^1.7.4",
