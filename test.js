@@ -139,6 +139,9 @@ const fetchMarketplaceData = async (
         });
  
         const data = await response.json();
+        console.log("Data",data.data);
+         
+
         if (
             data.data &&
             data.data.marketplace_search &&
@@ -146,6 +149,9 @@ const fetchMarketplaceData = async (
         ) {
             const vehicleDTOs = data.data.marketplace_search.feed_units.edges.map((edge) => {
                 const listing = edge.node.listing;
+                
+                
+                
                 return new VehicleDTO({
                     brand: listing.marketplace_listing_title.split(' ')[1] || '',
                     make: listing.marketplace_listing_title.split(' ')[0] || '',
@@ -164,8 +170,9 @@ const fetchMarketplaceData = async (
                     fetchedDateTime: new Date().toISOString()
                 });
             });
- 
+
             return vehicleDTOs;
+            
         } else {
             console.error("No data found:", data);
             return [];
@@ -176,9 +183,9 @@ const fetchMarketplaceData = async (
     }
 };
  
-const keyword = "bmw x5";
-const latitude = -33.8688;
-const longitude = 151.2093;
+const keyword = "bmw";
+const latitude = -37.814;
+const longitude = 144.96332;
  
 app.get('/get', async (req, res) => {
     try {
